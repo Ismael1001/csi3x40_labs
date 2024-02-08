@@ -1,25 +1,43 @@
 function createGame(n) {
-  // Check if the input is valid
   if (typeof n !== 'number' || n < 3) {
     throw new Error('Invalid input. n should be a number greater than or equal to 3.');
   }
 
-  // Initialize an array with n elements, all containing pellets "."
   const gameArray = Array(n).fill('.');
-
-  // Place the Pacman "C" in the middle of the array
   const pacmanIndex = Math.floor(n / 2);
   gameArray[pacmanIndex] = 'C';
-
-  // Place the Ghost "^" on the left side of Pacman
-  gameArray[pacmanIndex - 1] = '^';
-
-  // Place the fruit "@" on the right side of Pacman
-  gameArray[pacmanIndex + 1] = '@';
+  gameArray[pacmanIndex - 1] = '^';  // Ghost to the left of Pacman
+  gameArray[pacmanIndex + 1] = '@';  // Fruit to the right of Pacman
 
   return gameArray;
 }
 
+function moveLeft(game) {
+  const pacmanIndex = game.indexOf("C");
+
+  if (pacmanIndex > 0) {
+    [game[pacmanIndex - 1], game[pacmanIndex]] = [game[pacmanIndex], game[pacmanIndex - 1]];
+  }
+
+  return game;
+}
+
+function moveRight(game) {
+  const pacmanIndex = game.indexOf("C");
+
+  if (pacmanIndex < game.length - 1) {
+    [game[pacmanIndex], game[pacmanIndex + 1]] = [game[pacmanIndex + 1], game[pacmanIndex]];
+  }
+
+  return game;
+}
+
 // Example usage
-const gameArray = createGame(10);
-console.log(gameArray);
+const initialGame = createGame(10);
+console.log("Initial Game:", initialGame);
+
+const gameAfterLeftMove = moveLeft([...initialGame]);
+console.log("Game After Left Move:", gameAfterLeftMove);
+
+const gameAfterRightMove = moveRight([...initialGame]);
+console.log("Game After Right Move:", gameAfterRightMove);
